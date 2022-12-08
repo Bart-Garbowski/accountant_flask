@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <link rel="stylesheet" href="static/styles.css" type="text/css"/>
+
+</head>
+<body>
+
+    {% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class=flashes>
+    {% for message in messages %}
+      <li>{{ message }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
+
+
+    <div id="cointainer">
+        <div class="rectangle">
+        <h1>System Accountant</h1>
+        </div>
+        <br>
+        <br>
+        <h3>Aktualne saldo: {{ context.saldo }} </h3> 
+        <br>
+            <div class="square">
+                <h3 class="red">ZAKUP</h3>
+                <br>
+                    <form action="{{ url_for('home') }}", method="POST">
+                        <label for="product_name">Nazwa produktu:</label><br>
+                        <input type="text" id="product_name" name="product_name" ><br>
+                        <label for="product_count">Liczba sztuk:</label><br>
+                        <input type="text" id="product_count" name="product_count" ><br>
+                        <label for="product_price">Cena:</label><br>
+                        <input type="text" id="product_price" name="product_price" ><br>
+                        <input value="kupno" type="hidden" id="operation" name="operation">
+                        <input type="submit" value="Kup">
+                        
+                    </form> 
+            </div>
+            <div class="square">
+                <h3 class="red">SPRZEDAZ</h3>
+                <br>
+                    <form action="{{ url_for('home') }}", method="POST">
+                        <label for="product_name">Nazwa produktu:</label><br>
+                        <input type="text" id="product_name" name="product_name" ><br>
+                        <label for="product_count">Liczba sztuk:</label><br>
+                        <input type="text" id="product_count" name="product_count" ><br>
+                        <input value="sprzedaz" type="hidden" id="operation" name="operation">
+                        
+                        <input type="submit" value="Sprzedaj">
+                    </form> 
+            </div>
+            <div class="square">
+                <h3 class="red">ZMIANA SALDA</h3>
+                <br>
+                    <form action="{{ url_for('home') }}", method="POST">
+                        <label for="komentarz">Komentarz:</label><br>
+                        <input type="text" id="komentarz" name="komentarz" ><br>
+                        <label for="wartosc">Wartosc zmiany (+/-):</label><br>
+                        <input type="text" id="wartosc" name="wartosc" ><br>
+                        <input value="zmiana_salda" type="hidden" id="operation" name="operation">
+                        
+                        <input type="submit" value="Zmien Saldo">
+                    </form>
+            </div>
+            <div style="clear: both;"></div>
+            <br>
+            <br>
+            <br>
+            <br>
+            <h1>Stan Magazynowy</h1>
+
+            <nav>
+                <a href="{{ url_for('history') }}">Historia</a>
+            </nav>
+
+            <table>
+                <tr>
+                    <th>Nazwa Produktu</th>
+                    <th>Ilosc</th>
+                    <th>Cena za sztuke</th>
+                {% for product_name, product_data in context.home.items() %}
+                </tr>
+                    <td>{{ product_name }}</td>
+                    <td>{{ product_data.counts }}</td>
+                    <td>{{ product_data.price }}</td>
+                <tr>
+                {% endfor %}
+                </tr>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
